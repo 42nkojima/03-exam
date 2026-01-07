@@ -1,0 +1,97 @@
+[EN]
+Assignment name : broken_GNL
+Expected files  : get_next_line.c get_next_line.h
+Allowed functions : read, free, malloc
+--------------------------------------------------------------------------------
+Repair the function 'get_next_line' in the file get_next_line.c, whose prototype should be:
+char *get_next_line(int fd);
+
+You may need to repair other functions as well.
+
+Description of the 'get_next_line' function:
+
+Your function must return a line that has been read from the file descriptor
+passed as a parameter.
+
+A 'line that has been read' is defined as a succession of 0 to n characters
+ending with '\n' (ASCII code 0x0a) or with End of File (EOF).
+
+The line should be returned including the '\n' if there is one at the end
+of the line that has been read.
+
+When you reach the EOF, you must store the current buffer in a char * and
+return it. If the buffer is empty, you must return NULL.
+
+In case of an error, return NULL.
+
+If not returning NULL, the pointer should be freeable.
+
+Your program will be compiled with the flag -D BUFFER_SIZE=xx, which must be
+used as the buffer size for the read calls in your functions.
+
+Your function must be free of memory leaks.
+
+When you reach the EOF, your function should not keep any memory allocated with
+malloc except for the line that has been returned.
+
+Calling your function get_next_line in a loop will allow you to read
+the text available on a file descriptor one line at a time until the end of the
+text, regardless of the size of the text or any of its lines.
+
+Make sure that your function behaves correctly when reading from a file, from the
+standard output, from a redirection etc.
+
+No call to another function will be done on the file descriptor between two calls
+of get_next_line.
+
+Finally, we consider that get_next_line has undefined behavior when reading
+from a binary file.
+--------------------------------------------------------------------------------
+
+[JA]
+課題名 : broken_GNL
+提出ファイル : get_next_line.c get_next_line.h
+使用可能な関数 : read, free, malloc
+--------------------------------------------------------------------------------
+get_next_line.c ファイル内の関数 'get_next_line' を修復してください。プロトタイプは以下の通りです:
+char *get_next_line(int fd);
+
+他の関数も修復が必要な場合があります。
+
+'get_next_line' 関数の説明:
+
+この関数は、パラメータとして渡されたファイルディスクリプタから読み取った行を返す必要があります。
+
+「読み取られた行」とは、'\n'(ASCII コード 0x0a)またはファイル終端(EOF)で終わる、
+0 から n 文字の連続として定義されます。
+
+読み取られた行の末尾に '\n' がある場合は、それを含めて行を返す必要があります。
+
+EOF に達した場合、現在のバッファを char * に格納して返す必要があります。
+バッファが空の場合は NULL を返す必要があります。
+
+エラーが発生した場合は NULL を返します。
+
+NULL を返さない場合、ポインタは解放可能である必要があります。
+
+プログラムは -D BUFFER_SIZE=xx フラグでコンパイルされます。
+このフラグは、関数内の read 呼び出しのバッファサイズとして使用する必要があります。
+
+関数にメモリリークがないようにする必要があります。
+
+EOF に達したとき、関数は返された行を除いて、malloc で割り当てられた
+メモリを保持してはいけません。
+
+get_next_line 関数をループ内で呼び出すことで、テキストまたはその行の
+サイズに関係なく、ファイルディスクリプタで利用可能なテキストを
+テキストの終わりまで1行ずつ読み取ることができます。
+
+ファイルから読み取る場合、標準出力から読み取る場合、リダイレクトから読み取る場合など、
+関数が正しく動作することを確認してください。
+
+get_next_line の2回の呼び出しの間に、ファイルディスクリプタに対して
+他の関数が呼び出されることはありません。
+
+最後に、バイナリファイルから読み取る場合、get_next_line の動作は
+未定義であると見なされます。
+--------------------------------------------------------------------------------
