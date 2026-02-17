@@ -7,7 +7,7 @@
 #include <stdlib.h>
 
 int main(int ac, char **av) {
-	if (ac != 2 | strlen(av[1]) == 0)
+	if (ac != 2 || !av[1][0])
 		return (1);
 
 	char *buffer_start = malloc(BUFFER_SIZE);
