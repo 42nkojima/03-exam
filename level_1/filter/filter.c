@@ -35,9 +35,9 @@ int main(int ac, char **av) {
 	char *found;
 	while ((found = memmem(search, loaded - (search - buffer), target, target_len)) != NULL) {
 		for (size_t i = 0; i < target_len; i++) {
-			found[i] = '*';
+				found[i] = '*';
 		}
-		search += target_len;
+		search += (found - search) + target_len;
 	}
 
 	write(1, buffer, loaded);
