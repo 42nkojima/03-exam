@@ -1,58 +1,46 @@
-#define _GNU_SOURCE
-#define BUFFER_SIZE 2
-#include <string.h>
-#include <stdio.h>
-#include <errno.h>
 #include <unistd.h>
+#include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+
+#define BUFFER_SIZE 2
 
 int main(int ac, char **av) {
 	if (ac != 2 || !av[1][0])
 		return (1);
 
-	char *buffer_start = malloc(BUFFER_SIZE);
-	if (!buffer_start)
-		return (perror("Error"), free(buffer_start), 1);
-
-	ssize_t bytes_read;
-	size_t used_size = 0;
-	char *new_buffer;
-
+	char *buffer = NULL;
+	ssize_t loaded = 0, bytes_read = 0, capacity = BUFFER_SIZE;
 	while (1) {
-		// readで読み取る前に、今まで読み込んだbufferの量がBUFFER_SIZEを超えていたら、reallocでバッファサイズを増やす
-		if (used_size + BUFFER_SIZE > BUFFER_SIZE) {
-			new_buffer = realloc(buffer_start, used_size + BUFFER_SIZE);
-			if (!new_buffer)
-				return (perror("Error"), free(buffer_start), 1);
-			buffer_start = new_buffer;
+		if (loaded + BUFFER_SIZE >= capacity) {
+			capacity *= 2;
+
+			char *tmp = realloc(buffer, capacity);
+			if (!tmp) return (perror("Error"), free(buffer), 1);
+
+			buffer = tmp;
 		}
 
-		bytes_read = read(0,  buffer_start + used_size, BUFFER_SIZE);
-		if (bytes_read == -1)
-			return (perror("Error"), free(buffer_start), 1);
+		bytes_read = read(0, buffer + loaded, BUFFER_SIZE);
 		if (bytes_read == 0) break;
+		if (bytes_read == -1) return (perror("Error"), free(buffer), 1);
 
-		used_size += bytes_read;
+		loaded += bytes_read;
 	}
 
-	buffer_start[used_size] = '\0';
-	size_t buffer_len = strlen(buffer_start);
+	char *search = buffer;
+	char *target = av[1];
+	size_t target_len = strlen(target);
 
-	char *pattern = av[1];
-	size_t pattern_len = strlen(pattern);
-
-	// memmemで検索しながら置換を繰り返す
-	char *match_pos, *search_pos = buffer_start;
-	while((match_pos = memmem(search_pos, buffer_len - (search_pos - buffer_start), pattern, pattern_len)) != NULL) {
-		for (size_t i = 0; i < pattern_len; i++) {
-			match_pos[i] = '*';
+	char *found;
+	while ((found = memmem(search, loaded - (search - buffer), target, target_len)) != NULL) {
+		for (size_t i = 0; i < target_len; i++) {
+			found[i] = '*';
 		}
-		search_pos = match_pos + pattern_len;
+		search += target_len;
 	}
 
-	for (size_t i = 0; i < buffer_len; i++) {
-		write(1, &buffer_start[i], 1);
-	}
-	free(buffer_start);
+	write(1, buffer, loaded);
+	free(buffer);
 	return (0);
 }
