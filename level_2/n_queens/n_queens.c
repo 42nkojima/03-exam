@@ -26,13 +26,14 @@ typedef struct {
 
 static void dfs(NQueenCtx *ctx, int r) {
 	if (r == ctx->n) {
-		// ここに出力する処理を書く
 		for (int i = 0; i < ctx->n; i++) {
 			char tmp = ctx->queenPos[i] + '0';
 			write(1, &tmp, 1);
-			write(1, " ", 1);
+			if (i != ctx->n - 1) {
+				write(1, " ", 1);
+			}
 		}
-		write(1, "\n", 2);
+		write(1, "\n", 1);
 		return;
 	}
 
