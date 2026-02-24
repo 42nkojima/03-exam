@@ -21,11 +21,9 @@ int main(int ac, char **av) {
 			buffer = tmp;
 		}
 
-		bytes_read = -1;
-		if (bytes_read == -1)
-			return (perror("Error"), free(buffer), 1);
-		if (bytes_read == 0)
-			break;
+		bytes_read = read(0, buffer + loaded, BUFFER_SIZE);
+		if (bytes_read == 0) break;
+		if (bytes_read == -1) return (perror("Error"), free(buffer), 1);
 
 		loaded += bytes_read;
 	}
