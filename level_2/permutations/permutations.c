@@ -30,7 +30,7 @@ static void dfs(char *result, size_t depth, char *remaining, size_t rem_len) {
 		for (size_t i = 0; i < pick; i++) {
 			new_remaining[i] = remaining[i];
 		}
-		for (size_t i = 0; i < rem_len - 1; i++) {
+		for (size_t i = pick; i < rem_len - 1; i++) {
 			new_remaining[i] = remaining[i + 1];
 		}
 		dfs(result, depth + 1, new_remaining, rem_len - 1);
