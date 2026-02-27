@@ -2,13 +2,17 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+static void swap(char c1, char c2) {
+	char tmp = c1;
+	c1 = c2;
+	c2 = tmp;
+}
+
 static void sort(char *s, size_t len) {
-	for (size_t i = 0; i < len - 1; i++) {
-		for (size_t j = i + 1; j < len; j++) {
-			if (s[i] > s[j]) {
-				char tmp = s[i];
-				s[i] = s[j];
-				s[j] = tmp;
+	for (size_t i = 0; i < len; i++) {
+		for (size_t j = 0; j < len - 1 - i; j++) {
+			if (s[j] > s[j+1]) {
+				swap(s[j], s[j+1]);
 			}
 		}
 	}
